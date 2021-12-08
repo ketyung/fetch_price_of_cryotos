@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
 use reqwest::Error;
+use std::time::SystemTime;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CurrencyPrice {
@@ -11,11 +12,19 @@ pub struct CurrencyPrice {
     pub price : String,
 
     pub name : String, 
+
+    pub last_updated : Option<SystemTime>,
 }
 
 
+pub const PRICE_PREFIX : &str = "nomics::price::";
+
+
 const API_KEY : &str =
-"replace-your-nomics-api-key-here";
+
+"8e5c68f6963ab562148b80ddf121fc73b00808d0";
+
+//"replace-your-nomics-api-key-here";
 
 
 #[macro_export]

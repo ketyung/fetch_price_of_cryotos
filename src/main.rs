@@ -1,9 +1,10 @@
 use mini_redis::{client, Result};
 
 mod models;
-use crate::models::{get_price_of};
+use crate::models::{get_price_of, PRICE_PREFIX, CurrencyPrice};
+use std::time::SystemTime;
 
- 
+
 #[tokio::main]
 async fn main() -> Result<()> {
 
@@ -11,21 +12,57 @@ async fn main() -> Result<()> {
 
     client.set("text1", "This is a test of text1".into()).await?;
 
-    let res = client.get("text1").await.expect("error");
+    let price_id = format! ("{}{}", PRICE_PREFIX , "SOLUSD") ;
 
-    println!("The text1 value if {:?}", res);
+    let res = client.get( &price_id ).await?;
 
+    match res {
 
-    let prices = get_price_of!(String::from("SOL")).await?;
+        Some(s) =>{
+   
+            let cprice : CurrencyPrice = serde_json::from_slice(s.as_ref()).unwrap();
 
-    for p in prices {
+            if cprice.last_updated.unwrap_or(SystemTime::now()).elapsed().unwrap().as_secs() > 3600 {
 
-       
-        println!("Current solana price in USD is ::{}",p.price);
-    }    
+                let mut prices = get_price_of!(String::from("SOL")).await.unwrap();
 
+               
+                let serialized = serialize_and_set_time(&mut prices[0]);
+
+                client.set (&price_id, bytes::Bytes::from(serialized) ).await?;
+
+            }
+            else {
+
+                println!("Stored priced is {}", cprice.price);
+            }
+
+        }
+        ,
+        None =>{
+
+            let mut prices = get_price_of!(String::from("SOL")).await.unwrap();
+
+            let serialized = serialize_and_set_time(&mut prices[0]);
+
+            client.set (&price_id, bytes::Bytes::from(serialized) ).await?;
+
+        }
+    }
+
+  
     Ok(())
 
 }
 
+
+fn serialize_and_set_time ( price : &mut CurrencyPrice) -> String {
+
+    price.last_updated = Some(SystemTime::now());
+
+    println!("fetched remote price is ::{}", price.price);
+
+    return serde_json::to_string(&price).unwrap();
+
+}
 
