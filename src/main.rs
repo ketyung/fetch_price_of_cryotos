@@ -3,7 +3,8 @@ use mini_redis::{client, Result};
 mod models;
 use crate::models::{get_price_of, PRICE_PREFIX, CurrencyPrice};
 use std::time::SystemTime;
-
+use chrono::prelude::DateTime;
+use chrono::Utc;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -22,7 +23,10 @@ async fn main() -> Result<()> {
 
             let last_updated = cprice.last_updated.unwrap_or(SystemTime::now());
 
-            println!("last_updated::{:?}",last_updated);
+            let datetime = DateTime::<Utc>::from(last_updated);
+            let last_updated_str = datetime.format("%Y-%m-%d %H:%M:%S").to_string();
+          
+            println!("last_updated::{:?}",last_updated_str);
 
             if last_updated.elapsed().unwrap().as_secs() > 3600 {
 
