@@ -13,6 +13,8 @@ async fn main() -> Result<()> {
 
     let price_id = format! ("{}{}", PRICE_PREFIX , "SOLUSD") ;
 
+    println!("price_id:{:?}", price_id);
+    
     let res = client.get( &price_id ).await?;
 
     match res {
