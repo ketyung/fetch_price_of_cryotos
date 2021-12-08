@@ -58,7 +58,7 @@ fn serialize_and_set_time ( price : &mut CurrencyPrice) -> String {
 
     price.last_updated = Some(SystemTime::now());
 
-    println!("fetched remote price is ::{}", price.price);
+    println!("Fetched remote price is ::{}", price.price);
 
     return serde_json::to_string(&price).unwrap();
 

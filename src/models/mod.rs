@@ -20,10 +20,7 @@ pub struct CurrencyPrice {
 pub const PRICE_PREFIX : &str = "nomics::price::";
 
 
-const API_KEY : &str =
-
-
-"replace-your-nomics-api-key-here";
+const API_KEY : &str = "replace-your-nomics-api-key-here";
 
 
 #[macro_export]
