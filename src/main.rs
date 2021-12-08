@@ -16,7 +16,7 @@ async fn main() -> Result<()> {
     println!("The text1 value if {:?}", res);
 
 
-    let prices = get_price_of(String::from("SOL"), String::from("USD")).await?;
+    let prices = get_price_of!(String::from("SOL")).await?;
 
     for p in prices {
 

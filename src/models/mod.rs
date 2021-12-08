@@ -14,14 +14,26 @@ pub struct CurrencyPrice {
 }
 
 
+const API_KEY : &str =
+"replace-your-nomics-api-key-here";
+
+
+#[macro_export]
+macro_rules! get_price_of {
+    
+    ($a : expr ) => {
+        
+        get_price_of($a , String::from( "USD" ) )
+    };
+}
+
 
 pub async fn get_price_of(currency : String, convert_to : String) -> Result<Vec<CurrencyPrice>, Error>  {
-
 
     let request_url = format!(
         "https://api.nomics.com/v1/currencies/ticker?key={key}&ids={ids}&convert={convert}&interval={interval}", 
 
-        key = "replace-your-nomics-api-key-here", 
+        key = API_KEY, 
 
         ids = currency,
 
