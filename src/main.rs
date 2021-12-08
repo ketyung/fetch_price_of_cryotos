@@ -20,7 +20,11 @@ async fn main() -> Result<()> {
    
             let cprice : CurrencyPrice = serde_json::from_slice(s.as_ref()).unwrap();
 
-            if cprice.last_updated.unwrap_or(SystemTime::now()).elapsed().unwrap().as_secs() > 3600 {
+            let last_updated = cprice.last_updated.unwrap_or(SystemTime::now());
+
+            println!("last_updated::{:?}",last_updated);
+
+            if last_updated.elapsed().unwrap().as_secs() > 3600 {
 
                 let mut prices = get_price_of!(String::from("SOL")).await.unwrap();
 
