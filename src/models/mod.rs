@@ -22,9 +22,8 @@ pub const PRICE_PREFIX : &str = "nomics::price::";
 
 const API_KEY : &str =
 
-"8e5c68f6963ab562148b80ddf121fc73b00808d0";
 
-//"replace-your-nomics-api-key-here";
+"replace-your-nomics-api-key-here";
 
 
 #[macro_export]

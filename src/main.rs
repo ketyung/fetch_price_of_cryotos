@@ -10,8 +10,6 @@ async fn main() -> Result<()> {
 
     let mut client = client::connect("127.0.0.1:6379").await?;
 
-    client.set("text1", "This is a test of text1".into()).await?;
-
     let price_id = format! ("{}{}", PRICE_PREFIX , "SOLUSD") ;
 
     let res = client.get( &price_id ).await?;
