@@ -21,7 +21,7 @@ pub async fn get_price_of(currency : String, convert_to : String) -> Result<Vec<
     let request_url = format!(
         "https://api.nomics.com/v1/currencies/ticker?key={key}&ids={ids}&convert={convert}&interval={interval}", 
 
-        key = "8e5c68f6963ab562148b80ddf121fc73b00808d0", 
+        key = "replace-your-nomics-api-key-here", 
 
         ids = currency,
 
