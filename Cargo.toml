@@ -1,5 +1,5 @@
 [package]
-name = "testasyncrust"
+name = "fetch_price_of_cryotos"
 version = "0.1.0"
 edition = "2018"
 

@@ -10,24 +10,37 @@ async fn main() -> Result<()> {
 
     let args: Vec<String> = env::args().collect();
 
-    let (api_key, currencies, force_refresh) = parse_args(&args);
 
+    if args.len() < 3 {
 
-    let mut client = client::connect("127.0.0.1:6379").await?;
+        println!("Usage : ");
+        println!("fetch_price_of_cryptos your-nomics-api-key ETH,BTC,XRP,SOL");
+        println!("Or for development:");
+        println!("cargo run your-nomics-api-key ETH,BTC,XRP,SOL");
 
-    for curr in currencies {
-
-        index_price_for(api_key, curr, &mut client, force_refresh).await;
-   
     }
+    else {
 
+        let (api_key, currencies, force_refresh) = parse_args(&args);
+
+
+        let mut client = client::connect("127.0.0.1:6379").await?;
     
+        for curr in currencies {
+    
+            index_price_for(api_key, curr, &mut client, force_refresh).await;
+       
+        }
+    
+    }
+       
     Ok(())
 }
 
 
 
 fn parse_args(args: &[String]) -> (&str, Vec<&str>, bool) {
+
     let api_key = &args[1];
     let symbols = &args[2];
 
