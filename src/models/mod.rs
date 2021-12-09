@@ -35,6 +35,8 @@ macro_rules! get_price_of {
 }
 
 
+
+
 pub async fn get_price_of(api_key : &str,  currency : &str, convert_to : &str) -> Result<Vec<CurrencyPrice>, Error>  {
 
     let request_url = format!(
