@@ -7,3 +7,8 @@ store on redis if it doesn't exist yet or its last fetched time is more than 1 h
 Usage :
 
 cargo run your-nomics-api-key ETH,SOL,BTC
+
+
+# Force it to fetch from remote 
+cargo run your-nomics-api-key ETH,SOL,BTC force-refresh 
+

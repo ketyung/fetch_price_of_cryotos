@@ -61,7 +61,8 @@ pub async fn get_price_of(api_key : &str,  currency : &str, convert_to : &str) -
 
 
 
-pub async fn index_price_for (api_key : &str, currency : &str, client : &mut client::Client) {
+pub async fn index_price_for (api_key : &str, currency : &str, 
+    client : &mut client::Client, force_refresh : bool) {
 
     let price_id = format! ("{}{}{}", PRICE_PREFIX , currency, "USD") ;
 
@@ -80,7 +81,7 @@ pub async fn index_price_for (api_key : &str, currency : &str, client : &mut cli
           
             println!("last_updated::{:?}",last_updated_str);
 
-            if last_updated.elapsed().unwrap().as_secs() > 3600 {
+            if last_updated.elapsed().unwrap().as_secs() > 3600 || force_refresh {
 
                 let mut prices = get_price_of!(api_key, currency).await.unwrap();
 
