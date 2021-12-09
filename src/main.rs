@@ -2,17 +2,22 @@ use mini_redis::{client, Result};
 
 mod models;
 use crate::models::{index_price_for};
+use std::env;
+
 
 #[tokio::main]
 async fn main() -> Result<()> {
 
+    let args: Vec<String> = env::args().collect();
+
+    let (api_key, currencies) = parse_args(&args);
+
+
     let mut client = client::connect("127.0.0.1:6379").await?;
 
-    let symbols : [&str; 3] = ["SOL", "ETH", "BTC"];
+    for curr in currencies {
 
-    for symbol in symbols {
-
-        index_price_for(symbol, &mut client).await;
+        index_price_for(api_key, curr, &mut client).await;
    
     }
 
@@ -21,3 +26,13 @@ async fn main() -> Result<()> {
 }
 
 
+
+fn parse_args(args: &[String]) -> (&str, Vec<&str>) {
+    let api_key = &args[1];
+    let symbols = &args[2];
+
+    let splits = symbols.split(",");
+
+    (api_key, splits.collect())
+
+}

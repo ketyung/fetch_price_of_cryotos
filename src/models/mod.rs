@@ -23,25 +23,24 @@ pub struct CurrencyPrice {
 pub const PRICE_PREFIX : &str = "nomics_price_";
 
 
-const API_KEY : &str = "replace-your-nomics-api-key-here";
 
 
 #[macro_export]
 macro_rules! get_price_of {
     
-    ($a : expr ) => {
+    ($a : expr, $b : expr ) => {
         
-        get_price_of($a , String::from( "USD" ) )
+        get_price_of($a , $b,  "USD" )
     };
 }
 
 
-pub async fn get_price_of(currency : String, convert_to : String) -> Result<Vec<CurrencyPrice>, Error>  {
+pub async fn get_price_of(api_key : &str,  currency : &str, convert_to : &str) -> Result<Vec<CurrencyPrice>, Error>  {
 
     let request_url = format!(
         "https://api.nomics.com/v1/currencies/ticker?key={key}&ids={ids}&convert={convert}&interval={interval}", 
 
-        key = API_KEY, 
+        key = api_key, 
 
         ids = currency,
 
@@ -62,9 +61,9 @@ pub async fn get_price_of(currency : String, convert_to : String) -> Result<Vec<
 
 
 
-pub async fn index_price_for (symbol : &str, client : &mut client::Client) {
+pub async fn index_price_for (api_key : &str, currency : &str, client : &mut client::Client) {
 
-    let price_id = format! ("{}{}{}", PRICE_PREFIX , symbol, "USD") ;
+    let price_id = format! ("{}{}{}", PRICE_PREFIX , currency, "USD") ;
 
     let res = client.get( &price_id ).await.unwrap();
 
@@ -83,7 +82,7 @@ pub async fn index_price_for (symbol : &str, client : &mut client::Client) {
 
             if last_updated.elapsed().unwrap().as_secs() > 3600 {
 
-                let mut prices = get_price_of!(String::from(symbol)).await.unwrap();
+                let mut prices = get_price_of!(api_key, currency).await.unwrap();
 
                
                 let serialized = serialize_and_set_time(&mut prices[0]);
@@ -93,14 +92,14 @@ pub async fn index_price_for (symbol : &str, client : &mut client::Client) {
             }
             else {
 
-                println!("Stored priced is {}", cprice.price);
+                println!("Stored priced of {} is {}", currency, cprice.price);
             }
 
         }
         ,
         None =>{
 
-            let mut prices = get_price_of!(String::from(symbol)).await.unwrap();
+            let mut prices = get_price_of!(api_key, currency).await.unwrap();
 
             let serialized = serialize_and_set_time(&mut prices[0]);
 
