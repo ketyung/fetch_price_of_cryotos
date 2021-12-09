@@ -8,7 +8,14 @@ async fn main() -> Result<()> {
 
     let mut client = client::connect("127.0.0.1:6379").await?;
 
-    index_price_for("SOL", &mut client).await;
+    let symbols : [&str; 3] = ["SOL", "ETH", "BTC"];
+
+    for symbol in symbols {
+
+        index_price_for(symbol, &mut client).await;
+   
+    }
+
     
     Ok(())
 }
