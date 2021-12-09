@@ -1,4 +1,4 @@
-# testrustasync
+# fetch_price_of_cryptos
 
 Just a playground of Rust to test async await to fetch the prices of cryptos from Nomics API and serialize each of them to
 store on redis if it doesn't exist yet or its last fetched time is more than 1 hour or the --force-refresh is specified in
