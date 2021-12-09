@@ -33,7 +33,7 @@ fn parse_args(args: &[String]) -> (&str, Vec<&str>, bool) {
 
     let mut force_refresh = false ;
 
-    if  args.len() > 3 && args[3] == "force-refresh" {
+    if  args.len() > 3 && args[3] == "--force-refresh" {
 
         force_refresh = true ;
     }

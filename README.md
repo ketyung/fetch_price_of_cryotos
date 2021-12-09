@@ -10,5 +10,5 @@ cargo run your-nomics-api-key ETH,SOL,BTC
 
 
 ## Force it to fetch from remote 
-cargo run your-nomics-api-key ETH,SOL,BTC force-refresh 
+cargo run your-nomics-api-key ETH,SOL,BTC --force-refresh 
 
